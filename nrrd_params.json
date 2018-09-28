@@ -1,0 +1,15 @@
+{
+    "savepath": "C:\\Users\\jenniferwh\\Dropbox (Allen Institute)\\Mesoscale Connectome Papers in Progress\\2018 Plaque\\plaque map nrrd files", 
+    "ages": [
+        5, 
+        7, 
+        9, 
+        13, 
+        19
+    ], 
+    "mouse_lines": [
+        "APP/PS1", 
+        "hAPP-J20", 
+        "Tg2576"
+    ]
+}
