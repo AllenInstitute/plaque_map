@@ -4,13 +4,16 @@ Created on Tue Jul 31 14:43:02 2018
 
 @author: JENNIFERWH
 
-Produce nrrd file containing Allen CCFv3 structures color-coded by plaque density.
-Separate files are created for each mouse line - age group combination.
+Produce nrrd file containing Allen CCFv3 structures color-coded by plaque density
+as described in https://www.biorxiv.org/content/early/2018/08/18/395236. 
+Data from the paper is included in the plaque_densities_per_structure.csv file.
+Separate nrrd files are created for each mouse line - age group combination.
 
 Parameters
 ----------
-ages: list of ints
-mouse_lines: list of strings. Must exactly match column names in unionize file
+nrrd_params.json file that includes the mouse lines to map (APP/PS1,
+hAPP-J20, Tg2576), ages to map (5, 7, 9, 13, or 19 months), and an output path
+for saving files. 
 
 Returns
 -------

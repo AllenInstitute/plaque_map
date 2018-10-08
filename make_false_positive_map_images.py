@@ -3,6 +3,23 @@
 Created on Tue Jul 31 14:43:02 2018
 
 @author: JENNIFERWH
+Creates planar image sections from the 3D heatmap of false positive values
+showing where segmentation artifacts were observed in the plaque map dataset.
+Heatmap is overlaid on the template brain to assist in visualizing structures.
+See Figure 2k,l in https://www.biorxiv.org/content/early/2018/08/18/395236.
+Data from the paper is included in the plaque_densities_per_structure.csv file.
+
+Parameters
+----------
+false_positive_params.json file that includes the mouse line to map (APP/PS1,
+hAPP-J20, or both); scale for the heatmap; x, y, and z coordinates for the
+coronal, horizontal, and sagittal sections, respectively; and an output path
+for saving images. 
+
+Returns
+-------
+Saves a .png file containing the images at the requested x,y,z coordinates as
+in Figure 2 k,l in Whitesell et al., 2018 (accepted).
 """
 import os
 import numpy as np

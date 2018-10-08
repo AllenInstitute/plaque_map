@@ -3,7 +3,22 @@
 Created on Tue Jul 31 14:43:02 2018
 
 @author: JENNIFERWH
+Creates and saves a series of coronal image sections from the 3D heatmap of 
+plaque density values in the plaque_densities_per_structure.csv file.
+This image series can be converted to a movie as in 
+https://www.biorxiv.org/content/early/2018/08/18/395236 Movie 1.
+
+Parameters
+----------
+plaque_movie_params.json file that includes the mouse lines to map (APP/PS1,
+Tg2576, hAPP-J20), scale for the heatmap for each mouse line, age to use for
+mapping each mouse line, and an output path for saving images.
+
+Returns
+-------
+Saves a series of .png files containing the images at 25 um intervals.
 """
+
 import os
 import numpy as np
 import pandas as pd

@@ -3,7 +3,24 @@
 Created on Tue Jul 31 14:43:02 2018
 
 @author: JENNIFERWH
+Creates planar image sections from the 3D heatmap of plaque density per structure
+as described in https://www.biorxiv.org/content/early/2018/08/18/395236. 
+Data from the paper is included in the plaque_densities_per_structure.csv file.
+
+Parameters
+----------
+image_params.json file that includes the mouse line to map (APP/PS1,
+hAPP-J20, or Tg2576); age to map (5, 7, 9, 13, or 19 months), 
+scale for the heatmap; x, y, and z coordinates for the
+coronal, horizontal, and sagittal sections, respectively; and an output path
+for saving images. 
+
+Returns
+-------
+Saves a .png file containing the images at the requested x,y,z coordinates as
+in Figures 9 and 10 in Whitesell et al., 2018 (accepted).
 """
+
 import os
 import numpy as np
 import pandas as pd

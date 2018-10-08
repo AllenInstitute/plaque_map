@@ -3,18 +3,27 @@
 Created on Tue Sep 18 12:08:12 2018
 
 @author: jenniferwh
-Changes the colors in Allen Brain Explorer to a customized heatmap
-corresponding to plaque density.
+
+Changes the colors in the Allen Brain Explorer App to a customized heatmap
+corresponding to plaque density. Can be used to visualize the data from 
+https://www.biorxiv.org/content/early/2018/08/18/395236. Data from the paper
+is included as plaque_densities_per_structure.csv.
+Before using this code, download Brain Explorer from 
+http://mouse.brain-map.org/static/brainexplorer.
+Run Brain Explorer and download the Allen Mouse Common Coordinate Framework
+atlas using the prompts in the Brain Explorer program. This code modifies the
+ontology_v2.csv file installed by Brain Explorer to customize the colormap. 
 
 Parameters
 ----------
-mouse_line: string. Must exactly match column name in unionize file.
+mouse_line: string. Must exactly match column name in plaque_densities_per_structure.csv.
 age: int
-scale: factor by which to scale density values (1 for no scale)
+scale: factor by which to scale density values (1 for no scaling)
 
 Returns
 -------
-Saves 'ontology_v2.csv' which is used by the Brain Explorer App to draw structures.
+Saves 'ontology_v2.csv' in the user-specified location. This file is used by 
+the Brain Explorer App to assign colors to CCF structures.
 """
 
 import numpy as np
@@ -26,6 +35,7 @@ import matplotlib as mpl
 from matplotlib import cm
 mpl.rcParams['pdf.fonttype'] = 42
 
+# Find the path to an existing ontology document that was installed through the Brain Explorer interface
 path = r'C:\Users\jenniferwh\AppData\Local\Allen Institute\Brain Explorer 2\Atlases\Allen Mouse Brain Common Coordinate Framework'
 dat = pd.read_csv(os.path.join(path, 'ontology_v2.csv'))
 
