@@ -1,0 +1,22 @@
+```YAML
+    #where to find it on github
+    github_location: "AllenInstitute/plaque_map"
+    
+    #name to display on index page i.e
+    name: "Plaque Density Heatmaps"
+    
+    #description to show on index page i.e.
+    description:  "Code and data for generating plaque density heatmaps as described in Whitesell et al., 2018"
+    
+    #list of what institute(s) index pages this should be listed on
+    institute:  ["Allen Institute for Brain Science"]
+    
+    #whether it should be given prominence on index page or shown at all. pick one of
+    featured:  "no"
+    
+    #what license this is released under (pick standard notation) 
+    license: "Allen Institute Software Licence"
+    
+    #who are the primary contacts for this repo
+    contact:  ["jenniferwh@alleninstitute.org"]
+```
