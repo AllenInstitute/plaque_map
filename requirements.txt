@@ -1,0 +1,8 @@
+allensdk
+pandas
+numpy
+os
+argparse
+matplotlib
+json
+operator
