@@ -40,7 +40,7 @@ from matplotlib import cm
 mpl.rcParams['pdf.fonttype'] = 42
 
 # Find the path to an existing ontology document that was installed through the Brain Explorer interface
-path = r'/Users/jenniferwh/Library/Application Support/Brain Explorer 2/Atlases/Allen Mouse Brain Common Coordinate Framework'
+path = r'C:\Users\jenniferwh\AppData\Local\Allen Institute\Brain Explorer 2\Atlases\Allen Mouse Brain Common Coordinate Framework'
 dat = pd.read_csv(os.path.join(path, 'ontology_v2.csv'))
 
 unionize_dat = pd.read_csv('plaque_densities_per_structure.csv')
@@ -74,7 +74,7 @@ def get_cmap(group, age, colormap=cm.gray, scale=1):
     return rgb_vals, n
 
 def main():
-    rgb_vals, n = get_cmap(args.mouse_line, str(args.age)+' mo', cm.inferno, args.scale)
+    rgb_vals, n = get_cmap(args.mouse_line, str(args.age)+' mo', cm.hot, args.scale)
     for key in rgb_vals.keys():
         dat.loc[dat['database_id'] == key, 'red'] = int(rgb_vals[key][0])
         dat.loc[dat['database_id'] == key, 'green'] = int(rgb_vals[key][1])

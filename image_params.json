@@ -1,9 +1,9 @@
 {
-    "mouse_line": "APP/PS1", 
-    "scale": 0.7, 
-    "ycoord": 5625, 
-    "zcoord": 9100, 
-    "age": "13 mo", 
-    "savepath": "C:\\Users\\jenniferwh\\Dropbox (Allen Institute)\\Mesoscale Connectome Papers in Progress\\2018 Plaque\\figures\\Figure 9-10 plaque maps", 
-    "xcoord": 6650
+    "mouse_line": "Tg2576", 
+    "scale": 2, 
+    "ycoord": 5000, 
+    "zcoord": 4500, 
+    "age": "19 mo", 
+    "savepath": "C:\\Users\\jenniferwh\\Dropbox (Allen Institute)\\Mesoscale Connectome Papers in Progress\\2018 Plaque\\figures\\new_plaque_maps", 
+    "xcoord": 8000
 }
