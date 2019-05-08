@@ -1,9 +1,8 @@
 {
-    "mouse_line": "Tg2576", 
-    "scale": 2, 
-    "ycoord": 5000, 
-    "zcoord": 4500, 
-    "age": "19 mo", 
-    "savepath": "C:\\Users\\jenniferwh\\Dropbox (Allen Institute)\\Mesoscale Connectome Papers in Progress\\2018 Plaque\\figures\\new_plaque_maps", 
-    "xcoord": 8000
+    "scale": 0.0001,
+    "ycoord": 5000,
+    "zcoord": 4500,
+    "savepath": "/Users/jenniferwh/Dropbox/Diamond_collaboration/maps",
+    "xcoord": 8000,
+    "group": "11-12mo"
 }
