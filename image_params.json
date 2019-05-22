@@ -1,8 +1,9 @@
 {
-    "scale": 0.0001,
+    "mouse_line": "J20-VP",
+    "savepath": "/Users/jenniferwh/Dropbox/Visudyne_data/figures",
+    "age": "11.5mo",
+    "xcoord": 8000,
     "ycoord": 5000,
     "zcoord": 4500,
-    "savepath": "/Users/jenniferwh/Dropbox/Diamond_collaboration/maps",
-    "xcoord": 8000,
-    "group": "11-12mo"
+    "scale": 3
 }

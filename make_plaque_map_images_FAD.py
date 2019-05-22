@@ -30,12 +30,11 @@ import operator
 import json
 import matplotlib.pyplot as plt
 
-dat = pd.read_csv('plaque_densities_per_structure.csv')
-dat = dat[dat['control'] == False]
+dat = pd.read_csv(r'/Users/jenniferwh/Dropbox/Visudyne_data/plaque_unionizes.csv')
+dat = dat[dat['image_series_id'].isin([849058585, 846176900])]
 mcc = MouseConnectivityCache(manifest_file = '../connectivity/mouse_connectivity_manifest.json')
-st = mcc.get_structure_tree()
-ia_map = st.get_id_acronym_map()
-dat['structure_id'] = [ia_map[structure] for structure in dat['structure_acronym']]
+dat['mouse_line'] = 'J20-VP'
+dat['age_group'] = '11.5mo'
 
 def get_mean_value_per_structure(group, age, structure_ids):
     means = []
