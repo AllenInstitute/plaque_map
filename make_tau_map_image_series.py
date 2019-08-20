@@ -6,7 +6,7 @@ Created on Tue Jul 31 14:43:02 2018
 Creates and saves a series of coronal image sections from the 3D heatmap of 
 plaque density values in the plaque_densities_per_structure.csv file.
 This image series can be converted to a movie as in 
-https://www.biorxiv.org/content/early/2018/08/18/395236 Movie 1.
+        https://www.biorxiv.org/content/early/2018/08/18/395236 Movie 1.
 
 Parameters
 ----------

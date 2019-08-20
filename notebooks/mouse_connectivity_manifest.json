@@ -2,84 +2,78 @@
   "manifest": [
     {
       "type": "manifest_version",
-      "value": 1.3
+      "value": 1.1
     },
     {
-      "key": "BASEDIR",
       "type": "dir",
-      "spec": "."
+      "spec": ".",
+      "key": "BASEDIR"
     },
     {
-      "key": "STRUCTURE_TREE",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "structures.json",
-      "parent_key": "BASEDIR"
+      "key": "STRUCTURE_TREE"
     },
     {
-      "key": "REFERENCE_SPACE_VERSION",
+      "parent_key": "BASEDIR",
       "type": "dir",
       "spec": "%s",
-      "parent_key": "BASEDIR"
+      "key": "REFERENCE_SPACE_VERSION"
     },
     {
-      "key": "ANNOTATION",
+      "parent_key": "REFERENCE_SPACE_VERSION",
       "type": "file",
       "spec": "annotation_%d.nrrd",
-      "parent_key": "REFERENCE_SPACE_VERSION"
+      "key": "ANNOTATION"
     },
     {
-      "key": "TEMPLATE",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "average_template_%d.nrrd",
-      "parent_key": "BASEDIR"
+      "key": "TEMPLATE"
     },
     {
-      "key": "STRUCTURE_MASK",
+      "parent_key": "REFERENCE_SPACE_VERSION",
       "type": "file",
       "spec": "structure_masks/resolution_%d/structure_%d.nrrd",
-      "parent_key": "REFERENCE_SPACE_VERSION"
+      "key": "STRUCTURE_MASK"
     },
     {
-      "key": "STRUCTURE_MESH",
-      "type": "file",
-      "spec": "structure_meshes/structure_%d.obj",
-      "parent_key": "REFERENCE_SPACE_VERSION"
-    },
-    {
-      "key": "EXPERIMENTS",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "experiments.json",
-      "parent_key": "BASEDIR"
+      "key": "EXPERIMENTS"
     },
     {
-      "key": "STRUCTURE_UNIONIZES",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "experiment_%d/structure_unionizes.csv",
-      "parent_key": "BASEDIR"
+      "key": "STRUCTURE_UNIONIZES"
     },
     {
-      "key": "INJECTION_DENSITY",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "experiment_%d/injection_density_%d.nrrd",
-      "parent_key": "BASEDIR"
+      "key": "INJECTION_DENSITY"
     },
     {
-      "key": "INJECTION_FRACTION",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "experiment_%d/injection_fraction_%d.nrrd",
-      "parent_key": "BASEDIR"
+      "key": "INJECTION_FRACTION"
     },
     {
-      "key": "DATA_MASK",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "experiment_%d/data_mask_%d.nrrd",
-      "parent_key": "BASEDIR"
+      "key": "DATA_MASK"
     },
     {
-      "key": "PROJECTION_DENSITY",
+      "parent_key": "BASEDIR",
       "type": "file",
       "spec": "experiment_%d/projection_density_%d.nrrd",
-      "parent_key": "BASEDIR"
+      "key": "PROJECTION_DENSITY"
     }
   ]
 }
