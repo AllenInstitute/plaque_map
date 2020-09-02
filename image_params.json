@@ -1,9 +1,8 @@
 {
-    "mouse_line": "J20-VP",
-    "savepath": "/Users/jenniferwh/Dropbox/Visudyne_data/figures",
-    "age": "11.5mo",
+    "savepath": "/Users/jenniferwh/Dropbox (Allen Institute)/Diamond_collaboration/working_results",
+    "group": "11-12mo",
+    "scale": 2,
     "xcoord": 8000,
     "ycoord": 5000,
-    "zcoord": 4500,
-    "scale": 3
+    "zcoord": 4500
 }

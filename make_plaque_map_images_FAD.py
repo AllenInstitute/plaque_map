@@ -30,10 +30,11 @@ import operator
 import json
 import matplotlib.pyplot as plt
 
-dat = pd.read_csv(r'/Users/jenniferwh/Dropbox/Visudyne_data/plaque_unionizes.csv')
-dat = dat[dat['image_series_id'].isin([849058585, 846176900])]
+dat = pd.read_csv(r'/Users/jenniferwh/Dropbox (Allen Institute)/Visudyne_data/plaque_unionizes.csv')
+dat = dat[dat['image_series_id'].isin([913812471, 913811690, 912694913, 898600277])]
+dat = dat[dat['hemisphere_id'] == 1]
 mcc = MouseConnectivityCache(manifest_file = '../connectivity/mouse_connectivity_manifest.json')
-dat['mouse_line'] = 'J20-VP'
+dat['mouse_line'] = '5xFAD'
 dat['age_group'] = '11.5mo'
 
 def get_mean_value_per_structure(group, age, structure_ids):

@@ -31,23 +31,22 @@ import json
 import matplotlib.pyplot as plt
 
 path = r'/Users/jenniferwh/Dropbox/Diamond_collaboration'
-dat = pd.read_csv('/Users/jenniferwh/Dropbox/Diamond_collaboration/transposed_data.csv')
+dat = pd.read_csv('/Users/jenniferwh/Dropbox (Allen Institute)/Diamond_collaboration/data_files/thresholded_data_LR.csv')
 dat = pd.melt(dat, id_vars = ['SampleID', 'Condition'], value_name = 'density', var_name='acronym')
 mcc = MouseConnectivityCache(manifest_file = '..connectivity/mouse_connectivity_manifest.json')
 st = mcc.get_structure_tree()
 ia_map = st.get_id_acronym_map()
-dat['acronym'] = [acronym[1:-1] for acronym in dat['acronym'].values]
+dat['acronym'] = [acronym[:-2] for acronym in dat['acronym'].values]
 for structure in dat['acronym']:
     if structure == 'OutsideBrainBoundaries':
         dat.loc[dat['acronym'] == structure, 'structure_id'] = int(0)
     else:
         dat.loc[dat['acronym'] == structure, 'structure_id'] = ia_map[structure]
     
-dat.loc[dat['Condition'].isin(['12monthTG', '12monthTG.1', '12monthTG.2', '12monthTG.3', 
-        '11monthTG', '11monthTG.1', '11monthTG.2']), 'group'] = '11-12mo'
-dat.loc[dat['Condition'].isin(['9monthTG', '9monthTG.1', '9monthTG.2', '8monthTG', '8monthTG.1', 
-                        '8monthTG.2']), 'group'] = '8-9mo'
-dat.loc[dat['Condition'].isin(['3monthTG', '3monthTG.1', '3monthTG.2']), 'group'] = '3mo'
+dat.loc[dat['Condition'].isin(['12monthTG', '11monthTG']), 'group'] = '11-12mo'
+dat.loc[dat['Condition'].isin(['9monthTG', '8monthTG']), 'group'] = '8-9mo'
+dat.loc[dat['Condition'].isin(['3monthTG']), 'group'] = '3mo'
+dat.loc[dat['group'].isnull(), 'group'] = 'other'
 
 def get_mean_value_per_structure(group, structure_ids):
     means = []
@@ -85,7 +84,7 @@ def get_cmap(group, scale=1):
     structure_vals, n = get_mean_value_per_structure(group, dat['structure_id'].unique())
     rgb_vals = structure_vals.copy()
     for key in structure_vals:
-        rgb_vals[key] = tuple([255*i for i in cm.hot(structure_vals[key]*scale)[:3]])
+        rgb_vals[key] = tuple([255*i for i in cm.BuPu(structure_vals[key]*scale)[:3]])
         rgb_vals[0] = (0, 0, 0)
     return rgb_vals, n
 
@@ -103,7 +102,7 @@ def main(params):
     rows = 1
     for i in range(columns*rows):
         fig.add_subplot(rows, columns, i+1)
-        f = plt.imshow(image[i], cmap = cm.hot)
+        f = plt.imshow(image[i], cmap = cm.BuPu)
         plt.axis('off')
     cbar = fig.colorbar(f, fraction=0.046)
     cbar.set_label('pTau Probability (per mm$\mathregular{^{3}}$)', 
