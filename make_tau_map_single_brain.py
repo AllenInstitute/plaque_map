@@ -29,6 +29,7 @@ from matplotlib import cm
 import operator
 import json
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 path = r'/Users/jenniferwh/Dropbox/Diamond_collaboration'
 dat = pd.read_csv('/Users/jenniferwh/Dropbox (Allen Institute)/Diamond_collaboration/data_files/thresholded_data_LR.csv')
@@ -36,24 +37,22 @@ dat = pd.melt(dat, id_vars = ['SampleID', 'Condition'], value_name = 'density', 
 mcc = MouseConnectivityCache(manifest_file = '..connectivity/mouse_connectivity_manifest.json')
 st = mcc.get_structure_tree()
 ia_map = st.get_id_acronym_map()
-dat['acronym'] = [acronym[:-2] for acronym in dat['acronym'].values]
+dat['acronym'] = [acronym[:-2] for acronym in dat['acronym'].values] #throwing away hemisphere and averaging for now
 for structure in dat['acronym'].unique():
     dat.loc[dat['acronym'] == structure, 'structure_id'] = ia_map[structure]
-    
-dat.loc[dat['SampleID'] == 297, 'group'] = '297'
-dat.loc[dat['group'].isnull(), 'group'] = 'other'
 
 def get_mean_value_per_structure(group, structure_ids):
     means = []
     structs = []
-    isids = dat[(dat['group'] == group)]['SampleID'].values
+    isids = dat[(dat['SampleID'] == group)]['SampleID'].values
     for structure_id in structure_ids:
         if len(dat[(dat['structure_id'] == structure_id) & 
                        (dat['SampleID'].isin(isids))]) > 0:
             str_mean = dat[(dat['structure_id'] == structure_id) & 
                            (dat['SampleID'].isin(isids))]['density'].mean()
-            means.append(str_mean)
+            means.append(str_mean+1)
             structs.append(int(structure_id))
+    
     # Not all structures are represented in this dataset. 
     # Color missing structures by their parent
     structures = pd.DataFrame(st.get_structures_by_set_id([184527634]))
@@ -73,25 +72,31 @@ def get_mean_value_per_structure(group, structure_ids):
     for structure in missing_strs: # fill in the rest with zeros
         means.append(0)
         structs.append(structure)
-    structs.append(997)
-    means.append(0)
-    structs.append(129)
-    means.append(0)
-    structs.append(140)
-    means.append(0)
-    structs.append(81)
-    means.append(0)
-    structs.append(153)
-    means.append(0)
-    structs.append(145)
-    means.append(0)
-    
+
     structuredat = dict(zip(structs, means))
+    # Color cortical layer structures by their parent
+    layer_structs = st.get_structures_by_set_id([667481440, 667481441, 667481445, 667481446, 667481449])
+    layer_ids = [structure['id'] for structure in layer_structs]
+    layer_ids += [1121, 526, 20, 52, 543, 664, 92, 712, 139, 727, 28, 60, 743] #ENTl, ENTm
+    for structure in layer_ids:
+        parent = st.parent([structure])[0]['id']
+        str_mean = dat[(dat['structure_id'] == parent) & 
+                           (dat['SampleID'].isin(isids))]['density'].mean()
+        structuredat[structure] = str_mean
+        structuredat[997] = 0
+        structuredat[129] = 0
+        structuredat[140] = 0
+        structuredat[81] = 0
+        structuredat[153] = 0
+        structuredat[145] = 0
     return structuredat, len(isids)
 
 def get_cmap(group, scale=1):
     structure_vals, n = get_mean_value_per_structure(group, dat['structure_id'].unique())
-    rgb_vals = structure_vals.copy()
+    vals = np.array([value for key, value in structure_vals.items()])
+    maxi = np.quantile(vals, 0.95)
+    scaled_vals = [value/maxi for key, value in structure_vals.items()]
+    rgb_vals = dict(zip(structure_vals.keys(), scaled_vals))
     for key in structure_vals:
         rgb_vals[key] = tuple([255*i for i in cm.BuPu(structure_vals[key]*scale)[:3]])
         rgb_vals[0] = (255, 255, 255)
@@ -99,14 +104,14 @@ def get_cmap(group, scale=1):
 
 def main(params):
     reference_space =  mcc.get_reference_space()
-    structure_vals, n = get_mean_value_per_structure('297', 
+    structure_vals, n = get_mean_value_per_structure(params['SampleID'], 
                                                      dat.structure_id.unique())
-    rgb_vals, n = get_cmap('297', scale = 0.0001)
+    rgb_vals, n = get_cmap(params['SampleID'], scale = 5e-5)
     image = [0,0,0]
     image[0] = reference_space.get_slice_image(0, params['xcoord'], rgb_vals) #posterior
     image[1] = np.flip(np.rot90(reference_space.get_slice_image(2, params['zcoord'], rgb_vals)), 0) #right
     image[2] = np.rot90(reference_space.get_slice_image(1, params['ycoord'], rgb_vals))   #inferior
-    fig = plt.figure(figsize=(8, 3), facecolor=rgb_vals[0])
+    fig = plt.figure(figsize=(8, 3), facecolor='w')
     columns = 3
     rows = 1
     for i in range(columns*rows):
@@ -115,19 +120,22 @@ def main(params):
         plt.axis('off')
     cbar = fig.colorbar(f, fraction=0.046)
     cbar.set_label('pTau Probability (per mm$\mathregular{^{3}}$)', 
-                   rotation=90, color = 'w', fontsize = 12)
-    plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='w', fontsize = 10)
+                   rotation=90, fontsize = 10)
+    plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), fontsize = 10)
     
     maxval = max(structure_vals.items(), key=operator.itemgetter(1))[1]
-    cbar.ax.set_yticklabels([0, 
-                             np.round(maxval*.2, 2), 
-                             np.round(maxval*.4, 2),
-                             np.round(maxval*.6, 2),
-                             np.round(maxval*.8, 2),
-                             np.round(maxval, 2)])
+    print(maxval)
+    cbar_vals = [0, 
+                             np.round(maxval*.2, -3), 
+                             np.round(maxval*.4, -3),
+                             np.round(maxval*.6, -3),
+                             np.round(maxval*.8, -3),
+                             np.round(maxval, -3)]
+    cbar_vals = [int(value/1e3) for value in cbar_vals]
+    cbar.ax.set_yticklabels(cbar_vals)
     if not os.path.exists(params['savepath']):
         os.mkdir(params['savepath'])
-    mouse_line_fname = '297'
+    mouse_line_fname = str(params['SampleID'])
     plt.savefig(os.path.join(params['savepath'], 
                              '{0}_map_{1}-{2}-{3}.png'.format(mouse_line_fname,
                              params['xcoord'],
@@ -135,13 +143,13 @@ def main(params):
                              params['ycoord'])), 
             facecolor=fig.get_facecolor(),
             bbox_inches='tight', 
-            pad_inches=0.3, 
             format='png', 
             dpi=300)
     
 if __name__ == '__main__':
 
-    with open('image_params_single_brain.json', 'r') as data_file:    
+    with open('params/image_params_single_brain.json', 'r') as data_file:    
         parameters = json.load(data_file)
+    parameters['SampleID'] = 297
 
     main(parameters)
