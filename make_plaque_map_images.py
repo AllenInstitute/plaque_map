@@ -78,7 +78,7 @@ def main(params):
     cbar.set_label('Plaque % Volume', rotation=90, color = 'w', fontsize = 12)
     plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='w', fontsize = 10)
     
-    maxval = max(structure_vals.iteritems(), key=operator.itemgetter(1))[1]
+    maxval = max(structure_vals.items(), key=operator.itemgetter(1))[1]
     cbar.ax.set_yticklabels([0, 
                              np.round(maxval*.125, 2), 
                              np.round(maxval*.25, 2), 
