@@ -40,7 +40,7 @@ dat['acronym'] = [acronym[:-2] for acronym in dat['acronym'].values]
 for structure in dat['acronym'].unique():
     dat.loc[dat['acronym'] == structure, 'structure_id'] = ia_map[structure]
     
-dat.loc[dat['SampleID'] == 371, 'group'] = '371'
+dat.loc[dat['SampleID'] == 297, 'group'] = '297'
 dat.loc[dat['group'].isnull(), 'group'] = 'other'
 
 def get_mean_value_per_structure(group, structure_ids):
@@ -60,18 +60,32 @@ def get_mean_value_per_structure(group, structure_ids):
     missing_strs = [structure for structure in structures['id'].values if 
                     structure not in structs]
     print(len(missing_strs))
-    while len(missing_strs) > 0:
-        for structure in missing_strs:
-            ancestors = structures[structures['id'] == structure]['structure_id_path'].values[0]
-            for n in range(2, len(ancestors)+1):
-                ancestor = ancestors[-n:][0]
-                if ancestor in dat['structure_id'].unique():
-                    str_mean = dat[(dat['structure_id'] == ancestor) & 
-                               (dat['SampleID'].isin(isids))]['density'].mean()
-                    means.append(str_mean)
-                    structs.append(structure)
-                    missing_strs.remove(structure)
-                    break;
+    for structure in missing_strs:
+        ancestors = structures[structures['id'] == structure]['structure_id_path'].values[0]
+        for n in range(2, len(ancestors)+1):
+            ancestor = ancestors[-n:][0]
+            if ancestor in dat['structure_id'].unique():
+                str_mean = dat[(dat['structure_id'] == ancestor) & 
+                           (dat['SampleID'].isin(isids))]['density'].mean()
+                means.append(str_mean)
+                structs.append(structure)
+                missing_strs.remove(structure)
+    for structure in missing_strs: # fill in the rest with zeros
+        means.append(0)
+        structs.append(structure)
+    structs.append(997)
+    means.append(0)
+    structs.append(129)
+    means.append(0)
+    structs.append(140)
+    means.append(0)
+    structs.append(81)
+    means.append(0)
+    structs.append(153)
+    means.append(0)
+    structs.append(145)
+    means.append(0)
+    
     structuredat = dict(zip(structs, means))
     return structuredat, len(isids)
 
@@ -80,17 +94,15 @@ def get_cmap(group, scale=1):
     rgb_vals = structure_vals.copy()
     for key in structure_vals:
         rgb_vals[key] = tuple([255*i for i in cm.BuPu(structure_vals[key]*scale)[:3]])
-        rgb_vals[0] = (0, 0, 0)
-    print(rgb_vals)
+        rgb_vals[0] = (255, 255, 255)
     return rgb_vals, n
 
 def main(params):
     reference_space =  mcc.get_reference_space()
-    structure_vals, n = get_mean_value_per_structure(params['group'], 
+    structure_vals, n = get_mean_value_per_structure('297', 
                                                      dat.structure_id.unique())
-    rgb_vals, n = get_cmap(params['group'], params['scale'])
+    rgb_vals, n = get_cmap('297', scale = 0.0001)
     image = [0,0,0]
-    print(params['xcoord'])
     image[0] = reference_space.get_slice_image(0, params['xcoord'], rgb_vals) #posterior
     image[1] = np.flip(np.rot90(reference_space.get_slice_image(2, params['zcoord'], rgb_vals)), 0) #right
     image[2] = np.rot90(reference_space.get_slice_image(1, params['ycoord'], rgb_vals))   #inferior
@@ -115,7 +127,7 @@ def main(params):
                              np.round(maxval, 2)])
     if not os.path.exists(params['savepath']):
         os.mkdir(params['savepath'])
-    mouse_line_fname = params['group']
+    mouse_line_fname = '297'
     plt.savefig(os.path.join(params['savepath'], 
                              '{0}_map_{1}-{2}-{3}.png'.format(mouse_line_fname,
                              params['xcoord'],
